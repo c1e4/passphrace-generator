@@ -8,21 +8,23 @@ The script generates sequence of five pseudo-random integer numbers in range 1-6
 Then it uses pdfgrep to search for resulted word in supplied PDF file (dicewarewordlist.pdf)
 
 **How to use:** 
-1) Clone repository.
+1) Install pdfgrep
+```
+sudo apt show pdfgrep
+```
+2) Clone repository.
 ```
 git clone https://github.com/c1e4/passphrase-generator.git
 ```
-2) Navigate to cloned repository.
+3) Navigate to cloned repository.
 ```
 cd passphrase-generator
 ```
-
-3) Make the script executable.
+4) Make the script executable.
 ```
 chmod u+x passphrase-generator.sh
 ```
-
-3) Run the script with passing a desired number of words in your passphrase.
+5) Run the script with passing a desired number of words in your passphrase.
 ```
 ./passphrase-generator.sh 5
 
@@ -34,4 +36,4 @@ wordEncoded:62655 -> verdi
 wordEncoded:25412 -> ffff
 ``` 
 
-4) Just copy-paste generated words into an input form. 
+6) Just copy-paste generated words into an input form. 
