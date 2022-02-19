@@ -16,12 +16,13 @@ git clone https://github.com/c1e4/passphrase-generator.git
 4) Run the script with passing a desired number of words in your passphrase.
 ```
 ./passphrase-generator.sh 5
-``` 
+
 count is: 5
 wordEncoded:55445 -> statue
 wordEncoded:26443 -> fungal
 wordEncoded:25415 -> fh
 wordEncoded:62655 -> verdi
 wordEncoded:25412 -> ffff
+``` 
 
 5) Just copy-paste generated words into an input form. 
