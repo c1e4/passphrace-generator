@@ -39,7 +39,7 @@ do
 	fi
 
 
-	wordMeaning=$(pdfgrep -Ri $wordEncoded $HOME/Downloads/dicewarewordlist.pdf | grep -oE "$wordEncoded[[:space:]][A-Za-z0-9]\w*" | awk '{print $2}' | xargs)
+	wordMeaning=$(pdfgrep -Ri $wordEncoded dicewarewordlist.pdf | grep -oE "$wordEncoded[[:space:]][A-Za-z0-9]\w*" | awk '{print $2}' | xargs)
 
 	if [ -z "$wordMeaning" ]; then
 		echo "wordMeaning: $wordMeaning"
