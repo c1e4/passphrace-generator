@@ -12,8 +12,17 @@ Then it uses pdfgrep to search for resulted word in supplied PDF file (dicewarew
 ```
 git clone https://github.com/c1e4/passphrase-generator.git
 ```
-3) Put dicewarewordlist.pdf to ~/Downloads (or change path to your liking in the script).
-4) Run the script with passing a desired number of words in your passphrase.
+2) Navigate to cloned repository.
+```
+cd passphrase-generator
+```
+
+3) Make the script executable.
+```
+chmod u+x passphrase-generator.sh
+```
+
+3) Run the script with passing a desired number of words in your passphrase.
 ```
 ./passphrase-generator.sh 5
 
@@ -25,4 +34,4 @@ wordEncoded:62655 -> verdi
 wordEncoded:25412 -> ffff
 ``` 
 
-5) Just copy-paste generated words into an input form. 
+4) Just copy-paste generated words into an input form. 
