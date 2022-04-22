@@ -25,8 +25,15 @@ assemble_word() {
 	echo "$word"
 }
 
+#check if provided length argument is null or negative number
+checkPosNumberRegex='^[1-9]+$'
+if ! [[ $1 =~ $checkPosNumberRegex ]] ; then
+	echo -e "${RED}Error: Please provide a positive number as an argument.${NC}">&2;
+	exit 1
+fi
+
 #outputs number of words required for a passphrase (argument #1) 
-echo "count is: $1"
+echo -e "passphrase length: $1\n"
 #variable to store total generated passphrase
 totalPassphrase=""
 #for number of words required for a passphrase generate sequences
