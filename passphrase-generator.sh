@@ -6,6 +6,13 @@
 #   Writes resulted sequence to stdout
 #######################################
 
+GREEN='\033[0;32m'
+ORANGE='\033[0;33m'
+LIGHT_BLUE='\033[1;34m'
+WHITE='\033[1;37m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
 assemble_word() {
 	for k in {1..5}
 	do
@@ -20,6 +27,8 @@ assemble_word() {
 
 #outputs number of words required for a passphrase (argument #1) 
 echo "count is: $1"
+#variable to store total generated passphrase
+totalPassphrase=""
 #for number of words required for a passphrase generate sequences
 for ((i = 1; i <= $1; i++))
 do
@@ -42,10 +51,18 @@ do
 		echo "Exceptuion! wordMeaning is empty, generating again..."
 		wordMeaningu=$(assemble_word)
 	fi
-	
+
 	#send decoded word to stdout
 	echo "wordEncoded:$wordEncoded -> $wordMeaning"
+	#add current word to total passphrase
+	totalPassphrase=$totalPassphrase" $wordMeaning"
 	#reset variable for a next iteration
 	wordEncoded=""
 done
 
+echo -e "\n${ORANGE}The generated passhrase is:${NC}"
+echo -e "${LIGHT_BLUE}| | | | | | | | | | | | | | |${NC}"
+echo -e "${LIGHT_BLUE}▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼${NC}"
+echo "=============================="
+echo -e "${GREEN}$totalPassphrase${NC}"
+echo -e "==============================\n"
