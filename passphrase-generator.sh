@@ -25,10 +25,10 @@ assemble_word() {
 	echo "$word"
 }
 
-#check if provided length argument is null or negative number
-checkPosNumberRegex='^[1-9]+$'
-if ! [[ $1 =~ $checkPosNumberRegex ]] ; then
-	echo -e "${RED}Error: Please provide a positive number as an argument.${NC}">&2;
+#check if provided passphrase length is number and greater than 0
+checkPosNumberRegex='^[0-9]+$'
+if ! [[ $1 =~ $checkPosNumberRegex ]] || [[ $1 -le 0  ]] ; then
+	echo -e "${RED}Error: Please provide an integer positive number as an argument.${NC}">&2;
 	exit 1
 fi
 
