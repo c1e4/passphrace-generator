@@ -25,7 +25,7 @@ CHECK_POS_NUMBER_REGEX='^[0-9]+$'
 INPUT_CHOICE_REGEX='^[Yy]?$'
 #####################
 
-
+#Function that generates a sequence of random numbers in range [1-6] with total length 5
 assemble_word() {
 	for k in {1..5}
 	do
@@ -34,6 +34,7 @@ assemble_word() {
 		#on each iteration append previously generated number 
 		word=$word""$temp
 	done
+	#echo "${ORANGE}assemble_word: ${word}${NC}"
 	#send resulted secuence of numbers to stdout
 	echo "$word"
 }
@@ -43,7 +44,6 @@ if ! [[ $1 =~ $CHECK_POS_NUMBER_REGEX ]] || [[ $1 -le 0  ]] ; then
 	echo -e "${RED}Error: Please provide an integer positive number as an argument.${NC}">&2;
 	exit 1
 fi
-
 
 #check if user wants the passphrase to be 30 or more words long
 if [[ $1 -ge 30 ]]; then
@@ -61,40 +61,46 @@ if [[ $1 -ge 30 ]]; then
 
 fi
 
-
 #outputs number of words required for a passphrase (argument #1) 
 echo -e "passphrase length: $1\n"
+
 #variable to store total generated passphrase
 totalPassphrase=""
+
+#variable for actual length of a passphrase
+actualLength=0
+
 #for number of words required for a passphrase generate sequences
 for ((i = 1; i <= $1; i++))
 do
-	#function invocation
-	wordEncoded=$(assemble_word)
-
-	#if the word cannot be recognoized (empty), then try to generate again (still does not work, sadly)
-	if [ "$wordEncoded" = "" ]; then
-		echo "wordEncoded: $wordEncoded"
-		echo "Exceptuion! EncodedWord is empty, generating again..."
-		wordEncoded=$(assemble_word)
-	fi
+	#generate numbered sequence (encoded word), function invocation
+	numberedSequence=$(assemble_word)
 
 	#decode numbered sequence into a word using pdfgrep
-	wordMeaning=$(pdfgrep -Ri $wordEncoded dicewarewordlist.pdf | grep -oE "$wordEncoded[[:space:]][A-Za-z0-9]\w*" | awk '{print $2}' | xargs)
+	wordMeaning=$(pdfgrep -Ri $numberedSequence dicewarewordlist.pdf | grep -oE "$numberedSequence[[:space:]][A-Za-z0-9]\w*" | awk '{print $2}' | xargs)
 
-	#again check, however still cannot be handled
-	if [ -z "$wordMeaning" ]; then
-		echo "wordMeaning: $wordMeaning"
-		echo "Exceptuion! wordMeaning is empty, generating again..."
-		wordMeaningu=$(assemble_word)
-	fi
+	#sometimes a word cannot be decoded [unindentified root cause, approximately occurs in 1 of 25 requests]
+	# until decoded word is empty
+	until ! [[ -z "${wordMeaning}" ]]
+	do
+		#generate numbered sequence again
+		numberedSequence=$(assemble_word)
+		#try to decode
+		wordMeaning=$(pdfgrep -Ri $numberedSequence dicewarewordlist.pdf | grep -oE "$numberedSequence[[:space:]][A-Za-z0-9]\w*" | awk '{print $2}' | xargs)
+	done
+
 
 	#send decoded word to stdout
-	echo "wordEncoded:$wordEncoded -> $wordMeaning"
+	echo "numberedSequence:$numberedSequence -> $wordMeaning"
+
 	#add current word to total passphrase
 	totalPassphrase=$totalPassphrase" $wordMeaning"
+
+	#increment actual length after adding wordMeaning on current iteration
+	((actualLength++))
+
 	#reset variable for a next iteration
-	wordEncoded=""
+	numberedSequence=""
 done
 
 echo -e "\n${ORANGE}The generated passhrase is:${NC}"
@@ -103,3 +109,9 @@ echo -e "${LIGHT_BLUE}▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ �
 echo "=============================="
 echo -e "${GREEN}$totalPassphrase${NC}"
 echo -e "==============================\n"
+
+#final check if for some reason total number of words is less than requested
+if [[ actualLength -ne $1 ]]; then
+	echo -e "${RED}Something went wrong${NC}"
+fi
+
