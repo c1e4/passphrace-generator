@@ -103,6 +103,8 @@ do
 	numberedSequence=""
 done
 
+totalPassphrase=$(echo "${totalPassphrase}" | xargs)
+
 echo -e "\n${ORANGE}The generated passhrase is:${NC}"
 echo -e "${LIGHT_BLUE}| | | | | | | | | | | | | | |${NC}"
 echo -e "${LIGHT_BLUE}▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼${NC}"
@@ -114,4 +116,3 @@ echo -e "==============================\n"
 if [[ actualLength -ne $1 ]]; then
 	echo -e "${RED}Something went wrong${NC}"
 fi
-
